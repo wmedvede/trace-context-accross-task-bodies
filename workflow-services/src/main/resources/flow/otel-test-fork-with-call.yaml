@@ -1,0 +1,33 @@
+document:
+  dsl: '1.0.0'
+  namespace: otel
+  name: otel-test-fork-with-call
+  version: '1.0.0'
+do:
+  - forkTask1:
+      fork:
+        compete: true
+        branches:
+          - branch1:
+              call: http
+              with:
+                method: post
+                endpoint: http://localhost:8585/external-services/echo-one
+                body:
+                  message: "hello echo one!"
+          - branch2:
+              do:
+                - call2OnBranch2:
+                    call: http
+                    with:
+                      method: post
+                      endpoint: http://localhost:8585/external-services/echo-two
+                      body:
+                        message: "hello echo two!"
+                - call3OnBranch2:
+                    call: http
+                    with:
+                      method: post
+                      endpoint: http://localhost:8585/external-services/echo-three
+                      body:
+                        message: "hello echo three!"
